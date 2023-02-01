@@ -1,8 +1,8 @@
 const Header = ({ title }) => <h1>{ title }</h1>
 
 const Content = ({ list }) => {
-  return list.map((item) => <p key={item.title}>{ item.title } { item.exercises }</p>);
-} 
+  return list.map((item) => <Part key={item.title} title={ item.title } exercise={ item.exercises } />);
+}
 
 const Total = ({ list }) => {
   return <p>Number of exercises: {
@@ -11,6 +11,8 @@ const Total = ({ list }) => {
     }, 0)
   }</p>
 }
+
+const Part = ({ title, exercise }) => <p>{ title } { exercise }</p>;
 
 const App = () => {
   const course = 'Half Stack application development'
@@ -21,21 +23,7 @@ const App = () => {
   const part3 = 'State of a component'
   const exercises3 = 14
 
-  // return (
-  //   <div>
-  //     <h1>{course}</h1>
-  //     <p>
-  //       {part1} {exercises1}
-  //     </p>
-  //     <p>
-  //       {part2} {exercises2}
-  //     </p>
-  //     <p>
-  //       {part3} {exercises3}
-  //     </p>
-  //     <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
-  //   </div>
-  // )
+  
   const parts = [
     {
       title: part1,
