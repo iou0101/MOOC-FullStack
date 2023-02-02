@@ -15,12 +15,12 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const handleNextAnecdote = () => {
-
+    (selected === anecdotes.length - 1) ? setSelected(0) : setSelected(selected + 1)
   }
 
   return (
     <div>
-        <p>{selected}</p>
+        <p>{anecdotes[selected]}</p>
         <button onClick={handleNextAnecdote}>Next Anecdote</button>
     </div>
   )
