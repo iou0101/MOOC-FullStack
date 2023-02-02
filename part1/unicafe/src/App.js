@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
+const SIG_FIG = 3;
+
 const Button = ({ text, event }) => <button onClick={event}>{text}</button>
-const StatisticsLine = ({ label, value }) => <div><p>{label}: {value}</p></div>
+const StatisticsLine = ({ label, value }) => <tr><td>{label}</td><td>{value}</td></tr>;
 
 
 const Statistics = ({ ratings }) => {
@@ -11,19 +13,28 @@ const Statistics = ({ ratings }) => {
   // although MOOC shows different results and hence there's a different formula used,
   // i think that my formula of calculating the average of ratings is more accurate/the correct one
   // (unless im totally wrong about this, unsurprisingly lol)
-  const averageOfRatings = () => (sumOfRates() !== 0) ? (ratings.bad * 1 + ratings.neutral * 2 + ratings.good * 3) / sumOfRates() : "no ratings yet!";
-  const percentageOfPositive = () => (sumOfRates() !== 0) ? ratings.good * 100 / sumOfRates() : "no ratings yet!";
+  const averageOfRatings = () => (sumOfRates() !== 0) ? Number((ratings.bad * 1 + ratings.neutral * 2 + ratings.good * 3) / sumOfRates()).toPrecision(SIG_FIG) : "no ratings yet!";
+  const percentageOfPositive = () => Number(sumOfRates() !== 0) ? (ratings.good * 100 / sumOfRates()).toPrecision(SIG_FIG) + " %" : "no ratings yet!";
 
   return (
     <>
-      <h2>Statistics</h2>
-        <StatisticsLine label="good" value={ratings.good} />
-        <StatisticsLine label="neutral" value={ratings.neutral} />
-        <StatisticsLine label="bad" value={ratings.bad} />
-        <br />
-        <StatisticsLine label="All" value= {sumOfRates()} />
-        <StatisticsLine label="Average" value={averageOfRatings()} />
-        <StatisticsLine label="Percent positive" value={percentageOfPositive()}/> 
+      <table>
+        <thead>
+          <tr>
+            <th>
+              Statistics
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <StatisticsLine label="good" value={ratings.good} />
+          <StatisticsLine label="neutral" value={ratings.neutral} />
+          <StatisticsLine label="bad" value={ratings.bad} />
+          <StatisticsLine label="All" value= {sumOfRates()} />
+          <StatisticsLine label="Average" value={averageOfRatings()} />
+          <StatisticsLine label="Percent positive" value={percentageOfPositive()}/> 
+        </tbody>
+      </table>
     </>
   )
 
