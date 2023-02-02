@@ -10,6 +10,9 @@ const App = () => {
     bad: 0
   })
 
+  console.log(ratings);
+
+
 
 
 
@@ -18,6 +21,14 @@ const App = () => {
   const handleNeutralClick = () => setRatings({...ratings, neutral: ratings.neutral + 1});
 
   const handleBadClick = () => setRatings({...ratings, bad: ratings.bad + 1});
+
+  const sumOfRates = () => ratings.bad + ratings.neutral + ratings.good;
+
+  // although MOOC shows different results and hence there's a different formula used,
+  // i think that my formula of calculating the average of ratings is more accurate/the correct one
+  // (unless im totally wrong about this, unsurprisingly lol)
+  const averageOfRatings = () => (sumOfRates() !== 0) ? (ratings.bad * 1 + ratings.neutral * 2 + ratings.good * 3) / sumOfRates() : "no ratings yet!";
+  const percentageOfPositive = () => (sumOfRates() !== 0) ? ratings.good * 100 / sumOfRates() : "no ratings yet!";
 
 
   return ( 
@@ -30,6 +41,10 @@ const App = () => {
         <Stat label="good" figure={ratings.good} />
         <Stat label="neutral" figure={ratings.neutral} />
         <Stat label="bad" figure={ratings.bad} />
+        <br />
+        <Stat label="All" figure= {sumOfRates()} />
+        <Stat label="Average" figure={averageOfRatings()} />
+        <Stat label="Percent positive" figure={percentageOfPositive()}/> 
     </>
   );
 }
