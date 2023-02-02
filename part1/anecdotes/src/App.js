@@ -32,12 +32,23 @@ const App = () => {
     setAnecdotes(nextAnecdotes);
   } 
 
+
+  // this is ugly lol
+  const mostPopular = () => anecdotes.filter((item) => item.votes === Math.max(...anecdotes.map((item) => item.votes)));
+
+
+
   return (
     <div>
+        <h1>Anecdote of the Day</h1> 
         <button onClick={handleNextAnecdote}>Next Anecdote</button>
         <button onClick={handleVote}>Vote</button>
         <p>{anecdotes[selected].text}</p>
-        <p>{anecdotes[selected].votes}</p>        
+        <p>{anecdotes[selected].votes}</p>
+        
+        {/* make rendering 'most popular' conditional (after refactoring) */}
+        <h1>Anecdote with most votes</h1> 
+        <p>{mostPopular()[0].text}</p>
     </div>
   )
 
