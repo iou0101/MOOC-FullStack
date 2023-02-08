@@ -9,10 +9,13 @@ const Content = ({ list }) => {
 const Total = ({ list }) => {
   return (
     <p>
-      Number of exercises:{" "}
-      {list.reduce((acc, item) => {
-        return acc + item.exercises;
-      }, 0)}
+      <b>
+        Total of{" "}
+        {list.reduce((acc, item) => {
+          return acc + item.exercises;
+        }, 0)}{" "}
+        exercises
+      </b>
     </p>
   );
 };
@@ -52,6 +55,11 @@ const App = () => {
         title: "State of a component",
         exercises: 14,
         id: 3,
+      },
+      {
+        title: "Redux",
+        exercises: 11,
+        id: 4,
       },
     ],
   };
