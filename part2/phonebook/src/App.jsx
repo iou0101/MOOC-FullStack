@@ -6,16 +6,31 @@ const App = () => {
 
   const [newName, setNewName] = useState("");
 
+  const checkDuplicateNames = (name) => {
+    const personsNames = persons.map((person) => person.name);
+    return personsNames.includes(name);
+  };
+
+  const isDuplicate = (person) => {
+    return checkDuplicateNames(person.name); // decoupled to allow scaling
+  };
+
   const handleAddingPerson = (event) => {
     if (newName !== "") {
       event.preventDefault();
+
       const person = {
         id: persons.length + 1,
         name: newName,
       };
-      console.log(newName);
-      setPersons(persons.concat(person));
-      setNewName("");
+
+      if (!isDuplicate(person)) {
+        console.log(newName);
+        setPersons(persons.concat(person));
+        setNewName("");
+      } else {
+        alert(`${newName} is already added to phonebook`);
+      }
     }
   };
 
@@ -30,7 +45,6 @@ const App = () => {
         <div>
           name:{" "}
           <input value={newName} onChange={handleNameInputChange} required />
-          {/* <label for="">Required input field!</label> */}
         </div>
         <div>
           <button type="submit" onClick={handleAddingPerson}>
