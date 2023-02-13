@@ -7,8 +7,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
 
   const handleAddingPerson = (event) => {
-    event.preventDefault();
     if (newName !== "") {
+      event.preventDefault();
       const person = {
         id: persons.length + 1,
         name: newName,
@@ -16,7 +16,6 @@ const App = () => {
       console.log(newName);
       setPersons(persons.concat(person));
       setNewName("");
-    }
   };
 
   const handleNameInputChange = (event) => {
@@ -28,7 +27,10 @@ const App = () => {
       <h1>Phonebook App</h1>
       <form>
         <div>
-          name: <input value={newName} onChange={handleNameInputChange} />
+          <label>
+            name:{" "}
+            <input value={newName} onChange={handleNameInputChange} required />
+          </label>
         </div>
         <div>
           <button type="submit" onClick={handleAddingPerson}>
