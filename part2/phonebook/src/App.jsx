@@ -16,6 +16,7 @@ const App = () => {
       console.log(newName);
       setPersons(persons.concat(person));
       setNewName("");
+    }
   };
 
   const handleNameInputChange = (event) => {
@@ -27,10 +28,9 @@ const App = () => {
       <h1>Phonebook App</h1>
       <form>
         <div>
-          <label>
-            name:{" "}
-            <input value={newName} onChange={handleNameInputChange} required />
-          </label>
+          name:{" "}
+          <input value={newName} onChange={handleNameInputChange} required />
+          {/* <label for="">Required input field!</label> */}
         </div>
         <div>
           <button type="submit" onClick={handleAddingPerson}>
