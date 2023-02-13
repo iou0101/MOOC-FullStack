@@ -1,5 +1,10 @@
-const Number = ({ number }) => {
-  return <li>{number.name}</li>;
+const Contact = ({ name, number }) => {
+  return (
+    <tr>
+      <td>{name}</td>
+      <td>{number}</td>
+    </tr>
+  );
 };
 
-export default Number;
+export default Contact;
