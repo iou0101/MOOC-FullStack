@@ -1,8 +1,14 @@
 import { useState } from "react";
+import ContactsForm from "./components/ContactsForm";
 import Display from "./components/Display";
+import Search from "./components/Search";
+import ContactsForm from "./components/ContactsForm";
+
+// TODO: maintain ALL state management and event handlers in
+// 'App' while refactoring the rest of the funtionality to
+// other components
 
 const App = ({ contactsLog }) => {
-  // TODO: contacts state needs to be reworked
   const [contacts, setContacts] = useState(contactsLog);
 
   const [newContact, setNewContact] = useState({
@@ -10,6 +16,8 @@ const App = ({ contactsLog }) => {
     name: "",
     telephone: "",
   });
+
+  const [data, setData] = useState("");
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -66,53 +74,20 @@ const App = ({ contactsLog }) => {
     setSearchQuery(event.target.value);
   };
 
+  // testing out
+  const childToParent = (childData) => {
+    setData(childData);
+  };
+
   return (
     <>
       <div>
-        <h1>Phonebook App</h1>{" "}
-        <span>
-          <label>
-            Search box:
-            <input
-              className="searchBox"
-              value={searchQuery}
-              onChange={handleSearchBoxInputChange}
-            />
-          </label>
-        </span>
+        <h1>Phonebook App</h1>
+        <Search />
       </div>
-      <form>
-        <div>
-          <div>
-            <label>
-              name:
-              <input
-                className="nameInput"
-                value={newContact.name}
-                onChange={handleNameInputChange}
-                required
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-              telephone:
-              {/* i have no clue why input validation isn't working */}
-              <input
-                className="telephoneInput"
-                type="tel"
-                pattern="(^\+[0-9]{2}|^\+[0-9]{2}\(0\)|^\(\+[0-9]{2}\)\(0\)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9\-\s]{10}$)"
-                value={newContact.telephone}
-                onChange={handleTelephoneInputChange}
-                required
-              />
-            </label>
-          </div>
-        </div>
-        <button type="submit" onClick={handleAddingContact}>
-          Add
-        </button>
-      </form>
+      <h2>Add a new contact</h2>
+      <ContactsForm />
+      <h2>Contacts</h2>
       <Display contacts={contacts} searchQuery={searchQuery} />
     </>
   );

@@ -11,7 +11,6 @@ const Display = ({ contacts, searchQuery }) => {
 
   return (
     <>
-      <h2>Contacts</h2>
       <table>
         <thead>
           <tr>
