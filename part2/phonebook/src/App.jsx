@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Contact from "./components/Number";
+import Display from "./components/Display";
 
 const App = ({ contactsLog }) => {
   // TODO: contacts state needs to be reworked
@@ -62,12 +62,6 @@ const App = ({ contactsLog }) => {
     setNewContact({ ...newContact, telephone: event.target.value });
   };
 
-  const contactsToDisplay = () => {
-    return searchQuery == ""
-      ? contacts
-      : contacts.filter((contact) => contact.name.includes(searchQuery));
-  };
-
   const handleSearchBoxInputChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -119,24 +113,7 @@ const App = ({ contactsLog }) => {
           Add
         </button>
       </form>
-      <h2>Contacts</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Telephone number</th>
-          </tr>
-        </thead>
-        <tbody>
-          {contactsToDisplay().map((contact) => (
-            <Contact
-              key={contact.id}
-              name={contact.name}
-              number={contact.telephone}
-            />
-          ))}
-        </tbody>
-      </table>
+      <Display contacts={contacts} searchQuery={searchQuery} />
     </>
   );
 };
