@@ -1,11 +1,9 @@
 import { useState } from "react";
 import Contact from "./components/Number";
 
-const App = () => {
+const App = ({ contactsLog }) => {
   // TODO: contacts state needs to be reworked
-  const [contacts, setContacts] = useState([
-    { id: 1, name: "Arto Hellas", telephone: "06987654321" },
-  ]);
+  const [contacts, setContacts] = useState(contactsLog);
 
   const [newContact, setNewContact] = useState({
     id: contacts.length + 1,
@@ -13,13 +11,15 @@ const App = () => {
     telephone: "",
   });
 
-  // return true on duplicate names
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // returns true on duplicate names
   const checkDuplicateNames = (name) => {
     const contactsNames = contacts.map((contact) => contact.name);
     return contactsNames.includes(name);
   };
 
-  // return true on duplicate telephones
+  // returns true on duplicate telephones
   const checkDulicateTelephones = (telephone) => {
     const contactsTelephones = contacts.map((contact) => contact.telephone);
     return contactsTelephones.includes(telephone);
@@ -44,10 +44,6 @@ const App = () => {
           `Telephone number "${newContact.telephone}" belongs to an already added contact. Check the telephone number again please!`
         );
       else {
-        // setNewContact({
-        //   ...newContact,
-        //   id: contacts.length + 1,
-        // });
         setContacts(contacts.concat(newContact));
         setNewContact({
           id: newContact.id + 1,
@@ -66,16 +62,38 @@ const App = () => {
     setNewContact({ ...newContact, telephone: event.target.value });
   };
 
+  const contactsToDisplay = () => {
+    return searchQuery == ""
+      ? contacts
+      : contacts.filter((contact) => contact.name.includes(searchQuery));
+  };
+
+  const handleSearchBoxInputChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
   return (
     <>
-      <h1>Phonebook App</h1>
-
+      <div>
+        <h1>Phonebook App</h1>{" "}
+        <span>
+          <label>
+            Search box:
+            <input
+              className="searchBox"
+              value={searchQuery}
+              onChange={handleSearchBoxInputChange}
+            />
+          </label>
+        </span>
+      </div>
       <form>
         <div>
           <div>
             <label>
               name:
               <input
+                className="nameInput"
                 value={newContact.name}
                 onChange={handleNameInputChange}
                 required
@@ -85,7 +103,9 @@ const App = () => {
           <div>
             <label>
               telephone:
+              {/* i have no clue why input validation isn't working */}
               <input
+                className="telephoneInput"
                 type="tel"
                 pattern="(^\+[0-9]{2}|^\+[0-9]{2}\(0\)|^\(\+[0-9]{2}\)\(0\)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9\-\s]{10}$)"
                 value={newContact.telephone}
@@ -108,7 +128,7 @@ const App = () => {
           </tr>
         </thead>
         <tbody>
-          {contacts.map((contact) => (
+          {contactsToDisplay().map((contact) => (
             <Contact
               key={contact.id}
               name={contact.name}
