@@ -40,12 +40,17 @@ const App = () => {
       if (isDuplicate(newContact))
         alert(`${newContact.name} is already added to phonebook`);
       else if (checkDulicateTelephones(newContact.telephone))
-        alert(`${newContact.telephone} `);
+        alert(
+          `Telephone number "${newContact.telephone}" belongs to an already added contact. Check the telephone number again please!`
+        );
       else {
-        console.log(newContact.name);
+        // setNewContact({
+        //   ...newContact,
+        //   id: contacts.length + 1,
+        // });
         setContacts(contacts.concat(newContact));
         setNewContact({
-          ...newContact,
+          id: newContact.id + 1,
           name: "",
           telephone: "",
         });
@@ -64,40 +69,54 @@ const App = () => {
   return (
     <>
       <h1>Phonebook App</h1>
+
       <form>
         <div>
-          name:{" "}
-          <input
-            value={newContact.name}
-            onChange={handleNameInputChange}
-            required
-          />
+          <div>
+            <label>
+              name:
+              <input
+                value={newContact.name}
+                onChange={handleNameInputChange}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              telephone:
+              <input
+                type="tel"
+                pattern="(^\+[0-9]{2}|^\+[0-9]{2}\(0\)|^\(\+[0-9]{2}\)\(0\)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9\-\s]{10}$)"
+                value={newContact.telephone}
+                onChange={handleTelephoneInputChange}
+                required
+              />
+            </label>
+          </div>
         </div>
-        <div>
-          telephone:{" "}
-          <input
-            value={newContact.telephone}
-            onChange={handleTelephoneInputChange}
-            required
-          />
-        </div>
-
-        <div>
-          <button type="submit" onClick={handleAddingContact}>
-            Add
-          </button>
-        </div>
+        <button type="submit" onClick={handleAddingContact}>
+          Add
+        </button>
       </form>
-      <h2>Numbers</h2>
-      <ul>
-        {contacts.map((contact) => (
-          <Contact
-            key={contact.id}
-            name={contact.person}
-            numbe={contact.number}
-          />
-        ))}
-      </ul>
+      <h2>Contacts</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Telephone number</th>
+          </tr>
+        </thead>
+        <tbody>
+          {contacts.map((contact) => (
+            <Contact
+              key={contact.id}
+              name={contact.name}
+              number={contact.telephone}
+            />
+          ))}
+        </tbody>
+      </table>
     </>
   );
 };

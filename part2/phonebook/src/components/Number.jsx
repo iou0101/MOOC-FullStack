@@ -1,8 +1,8 @@
 const Contact = ({ name, number }) => {
   return (
     <tr>
-      <td>{name}</td>
-      <td>{number}</td>
+      <th>{name}</th>
+      <th>{number}</th>
     </tr>
   );
 };
