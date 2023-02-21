@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ContactsForm from "./components/ContactsForm";
-// import Display from "./components/Display";
+import Display from "./components/Display";
 // import Search from "./components/Search";
 
 // TODO: maintain ALL state management and event handlers in
@@ -90,11 +90,6 @@ const App = ({ contactsLog }) => {
         );
   };
 
-  // // testing out
-  // const childToParent = (childData) => {
-  //   setData(childData);
-  // };
-
   return (
     <>
       <div>
@@ -111,7 +106,7 @@ const App = ({ contactsLog }) => {
         onClick={handleAddingSubmittedContact}
       />
       <h2>Contacts</h2>
-      {/* <Display contacts={contacts} searchQuery={searchQuery} /> */}
+      <Display contacts={contacts} />
     </>
   );
 };

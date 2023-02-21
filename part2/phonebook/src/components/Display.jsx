@@ -11,7 +11,7 @@ const Display = ({ contacts }) => {
           </tr>
         </thead>
         <tbody>
-          {contactsToDisplay().map((contact) => (
+          {contacts.map((contact) => (
             <Contact
               key={contact.id}
               name={contact.name}
