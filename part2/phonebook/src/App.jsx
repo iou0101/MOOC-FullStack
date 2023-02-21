@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ContactsForm from "./components/ContactsForm";
 import Display from "./components/Display";
 import Search from "./components/Search";
@@ -7,8 +7,16 @@ import Search from "./components/Search";
 // 'App' while refactoring the rest of the funtionality to
 // other components
 
-const App = ({ contactsLog }) => {
-  const [contacts, setContacts] = useState(contactsLog);
+const App = (props) => {
+  const hook = () => {
+    fetch("https://jdiqd7-5174.preview.csb.app/persons")
+      .then((response) => response.json())
+      .then((data) => setContacts(data));
+  };
+
+  useEffect(hook, []);
+
+  const [contacts, setContacts] = useState([]);
 
   const [newContact, setNewContact] = useState({
     id: contacts.length + 1,
@@ -63,14 +71,10 @@ const App = ({ contactsLog }) => {
   };
 
   const handleNameInputFromCFComponent = (input) => {
-    console.log(input);
-
     setNewContact({ ...newContact, name: input });
   };
 
   const handleTelephoneInputCFComponent = (input) => {
-    console.log(input);
-
     setNewContact({ ...newContact, telephone: input });
   };
 
