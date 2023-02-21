@@ -1,14 +1,6 @@
 import Contact from "./Contact";
 
-const Display = ({ contacts, searchQuery }) => {
-  const contactsToDisplay = () => {
-    return searchQuery == ""
-      ? contacts
-      : contacts.filter((contact) =>
-          contact.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-  };
-
+const Display = ({ contacts }) => {
   return (
     <>
       <table>
