@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ContactsForm from "./components/ContactsForm";
 import Display from "./components/Display";
-// import Search from "./components/Search";
+import Search from "./components/Search";
 
 // TODO: maintain ALL state management and event handlers in
 // 'App' while refactoring the rest of the funtionality to
@@ -94,7 +94,10 @@ const App = ({ contactsLog }) => {
     <>
       <div>
         <h1>Phonebook App</h1>
-        {/* <Search /> */}
+        <Search
+          handleSearchBoxInputChange={handleSearchBoxInputChange}
+          searchQuery={searchQuery}
+        />
       </div>
       <h2>Add a new contact</h2>
       <ContactsForm
@@ -106,7 +109,7 @@ const App = ({ contactsLog }) => {
         onClick={handleAddingSubmittedContact}
       />
       <h2>Contacts</h2>
-      <Display contacts={contacts} />
+      <Display contacts={contactsToDisplay} />
     </>
   );
 };

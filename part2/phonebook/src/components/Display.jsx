@@ -1,6 +1,6 @@
 import Contact from "./Contact";
 
-const Display = ({ contacts }) => {
+const Display = (props) => {
   return (
     <>
       <table>
@@ -11,7 +11,7 @@ const Display = ({ contacts }) => {
           </tr>
         </thead>
         <tbody>
-          {contacts.map((contact) => (
+          {props.contacts().map((contact) => (
             <Contact
               key={contact.id}
               name={contact.name}

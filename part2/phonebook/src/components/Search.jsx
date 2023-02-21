@@ -1,6 +1,6 @@
-const Search = () => {
+const Search = (props) => {
   const handleSearchBoxInputChange = (event) => {
-    setSearchQuery(event.target.value);
+    props.handleSearchBoxInputChange(event);
   };
 
   return (
@@ -8,7 +8,7 @@ const Search = () => {
       Search box:
       <input
         className="searchBox"
-        value={searchQuery}
+        value={props.searchQuery}
         onChange={handleSearchBoxInputChange}
       />
     </label>
