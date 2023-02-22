@@ -4,7 +4,7 @@ const getAllContacts = () => {
   return fetch(baseUrl).then((response) => response.json());
 };
 
-const addContact = (contact) => {
+const createContact = (contact) => {
   return fetch(baseUrl, {
     method: "POST",
     headers: {
@@ -18,5 +18,5 @@ const addContact = (contact) => {
 
 export default {
   getAllContacts: getAllContacts,
-  addContact: addContact,
+  createContact: createContact,
 };

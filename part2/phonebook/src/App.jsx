@@ -14,9 +14,14 @@ const App = (props) => {
 
   const [searchQuery, setSearchQuery] = useState("");
 
+  const getContacts = () => {
+    return contactsService
+      .getAllContacts()
+      .then((contacts) => setContacts(contacts));
+  };
   useEffect(() => {
     console.log("use effect ran!");
-    contactsService.getAllContacts().then((contacts) => setContacts(contacts));
+    getContacts();
   }, []);
 
   // returns true on duplicate names
@@ -27,7 +32,7 @@ const App = (props) => {
 
   const addContact = (contact) => {
     contactsService
-      .addContact(contact)
+      .createContact(contact)
       .then((data) => setContacts(data))
       .then(() => {
         // setContacts(contacts.concat(newContact));
@@ -35,7 +40,7 @@ const App = (props) => {
           name: "",
           telephone: "",
         });
-        contactsService.getAllContacts();
+        getContacts();
       });
   };
 
