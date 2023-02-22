@@ -11,13 +11,17 @@ const Display = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.contacts().map((contact) => (
-            <Contact
-              key={contact.id}
-              name={contact.name}
-              number={contact.telephone}
-            />
-          ))}
+          {console.log(props.contacts)}
+          {props.contacts &&
+            props.contacts.map((contact) => (
+              <Contact
+                key={contact.id}
+                name={contact.name}
+                number={contact.telephone}
+                id={contact.id}
+                handleDeletingAContact={props.handleDeletingAContact}
+              />
+            ))}
         </tbody>
       </table>
     </>

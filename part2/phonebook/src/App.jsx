@@ -31,17 +31,15 @@ const App = (props) => {
   };
 
   const addContact = (contact) => {
-    contactsService
-      .createContact(contact)
-      .then((data) => setContacts(data))
-      .then(() => {
-        // setContacts(contacts.concat(newContact));
-        setNewContact({
-          name: "",
-          telephone: "",
-        });
-        getContacts();
+    contactsService.createContact(contact).then((data) => {
+      setContacts(data);
+      // setContacts(contacts.concat(newContact));
+      setNewContact({
+        name: "",
+        telephone: "",
       });
+      getContacts();
+    });
   };
 
   // returns true on duplicate telephones
@@ -89,6 +87,17 @@ const App = (props) => {
     setSearchQuery(event.target.value);
   };
 
+  const handleDeletingAContact = (id) => {
+    contactsService.getContact(id).then((nameOfContactToDelete) => {
+      if (
+        window.confirm(
+          `Do you really want to delete ${nameOfContactToDelete.name}'s contact?`
+        )
+      )
+        contactsService.deleteContact(id).then(() => getContacts());
+    });
+  };
+
   const DUTCH_PHONE_NUMBER_REGEX =
     "^(06[0-9]{8}|[+]{1}31[0]?[0-9]{9,10}|0031[0]?[0-9]{9,10})";
   const telephoneRegex = new RegExp(DUTCH_PHONE_NUMBER_REGEX);
@@ -121,7 +130,14 @@ const App = (props) => {
       />
       <h2>Contacts</h2>
       {/* // conditional rendering to prevent calling .map() on null while waiting for the fetch request */}
-      {contacts && <Display contacts={contactsToDisplay} />}
+
+      {/* // TODO : FIX THE NASTY BUG AFTER OF THE APP IMMEDIATELY CRASHING AFTER ANY POST REQUEST !! */}
+      {contacts && (
+        <Display
+          contacts={contactsToDisplay()}
+          handleDeletingAContact={handleDeletingAContact}
+        />
+      )}
     </>
   );
 };

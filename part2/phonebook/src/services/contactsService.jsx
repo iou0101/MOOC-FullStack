@@ -1,22 +1,37 @@
-const baseUrl = "https://jdiqd7-5174.preview.csb.app/contacts";
+const baseUrl = "https://jdiqd7-5174.preview.csb.app/contacts/";
+
+const getContact = (id) => {
+  const response = fetch(baseUrl + `${id}`);
+  return response.then((response) => response.json());
+};
 
 const getAllContacts = () => {
-  return fetch(baseUrl).then((response) => response.json());
+  const request = fetch(baseUrl);
+  return request.then((response) => response.json());
 };
 
 const createContact = (contact) => {
-  return fetch(baseUrl, {
+  const request = fetch(baseUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(contact),
-  })
-    .then((resp) => resp.json())
-    .then((data) => console.log(data));
+  });
+
+  return request.then((response) => response.json());
+};
+
+const deleteContact = (id) => {
+  const request = fetch(baseUrl + `${id}`, {
+    method: "DELETE",
+  });
+  return request.then((response) => response.json());
 };
 
 export default {
-  getAllContacts: getAllContacts,
-  createContact: createContact,
+  getContact,
+  getAllContacts,
+  createContact,
+  deleteContact,
 };

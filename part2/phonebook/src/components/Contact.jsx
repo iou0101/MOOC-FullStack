@@ -1,8 +1,17 @@
-const Contact = ({ name, number }) => {
+const Contact = (props) => {
   return (
     <tr>
-      <th>{name}</th>
-      <th>{number}</th>
+      <th>{props.name}</th>
+      <th>{props.number}</th>
+      <th>
+        <button
+          onClick={() => {
+            props.handleDeletingAContact(props.id);
+          }}
+        >
+          Delete
+        </button>
+      </th>
     </tr>
   );
 };
