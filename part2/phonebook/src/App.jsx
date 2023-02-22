@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ContactsForm from "./components/ContactsForm";
 import Display from "./components/Display";
 import Search from "./components/Search";
+import contactsService from "./services/contactsService";
 
 const App = (props) => {
   const [contacts, setContacts] = useState(null);
@@ -13,14 +14,9 @@ const App = (props) => {
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  const getAllContacts = () => {
-    fetch("https://jdiqd7-5174.preview.csb.app/persons")
-      .then((response) => response.json())
-      .then((data) => setContacts(data));
-  };
   useEffect(() => {
     console.log("use effect ran!");
-    getAllContacts();
+    contactsService.getAllContacts().then((contacts) => setContacts(contacts));
   }, []);
 
   // returns true on duplicate names
@@ -29,23 +25,18 @@ const App = (props) => {
     return contactsNames.includes(name);
   };
 
-  const postContact = (contact) => {
-    fetch("https://jdiqd7-5174.preview.csb.app/persons", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(contact),
-    })
-      .then((resp) => resp.json())
-      .then((data) => console.log(data))
+  const addContact = (contact) => {
+    contactsService
+      .addContact(contact)
+      .then((data) => setContacts(data))
       .then(() => {
+        // setContacts(contacts.concat(newContact));
         setNewContact({
           name: "",
           telephone: "",
         });
-      })
-      .then(() => getAllContacts());
+        contactsService.getAllContacts();
+      });
   };
 
   // returns true on duplicate telephones
@@ -76,10 +67,7 @@ const App = (props) => {
           `Telephone number "${newContact.telephone}" belongs to an already added contact. Check the telephone number again please!`
         );
       else {
-        // setContacts(contacts.concat(newContact));
-        console.log(newContact);
-
-        postContact(newContact);
+        addContact(newContact);
       }
     }
   };
@@ -127,7 +115,8 @@ const App = (props) => {
         onClick={handleAddingSubmittedContact}
       />
       <h2>Contacts</h2>
-      <Display contacts={contactsToDisplay} />
+      {/* // conditional rendering to prevent calling .map() on null while waiting for the fetch request */}
+      {contacts && <Display contacts={contactsToDisplay} />}
     </>
   );
 };
