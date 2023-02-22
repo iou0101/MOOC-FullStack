@@ -31,15 +31,39 @@ const App = (props) => {
   };
 
   const addContact = (contact) => {
-    contactsService.createContact(contact).then((data) => {
-      setContacts(data);
-      // setContacts(contacts.concat(newContact));
-      setNewContact({
-        name: "",
-        telephone: "",
+    contactsService.createContact(contact).then(() =>
+      contactsService.getAllContacts().then((data) => {
+        setContacts(data);
+        // setContacts(contacts.concat(newContact));
+        setNewContact({
+          name: "",
+          telephone: "",
+        });
+        getContacts();
+      })
+    );
+  };
+
+  const updateContact = (contact) => {
+    if (
+      window.confirm(
+        `Do you really want to update ${contact.name}'s telephone to ${contact.telephone}?` // lol
+      )
+    ) {
+      contactsService.getContactByName(newContact.name).then((oldContact) => {
+        contactsService.updateContact(oldContact.id, contact).then(() =>
+          contactsService.getAllContacts().then((data) => {
+            setContacts(data);
+            // setContacts(contacts.concat(newContact));
+            setNewContact({
+              name: "",
+              telephone: "",
+            });
+            getContacts();
+          })
+        );
       });
-      getContacts();
-    });
+    }
   };
 
   // returns true on duplicate telephones
@@ -65,13 +89,15 @@ const App = (props) => {
       if (isDuplicate(newContact)) {
         console.log("duplicate!");
         alert(`${newContact.name} is already added to phonebook`);
-      } else if (checkDulicateTelephones(newContact.telephone))
+      } else if (checkDulicateTelephones(newContact.telephone)) {
         alert(
           `Telephone number "${newContact.telephone}" belongs to an already added contact. Check the telephone number again please!`
         );
-      else {
-        addContact(newContact);
+      } else if (checkDuplicateNames(newContact.name)) {
+        updateContact(newContact);
       }
+    } else {
+      addContact(newContact);
     }
   };
 
@@ -88,7 +114,7 @@ const App = (props) => {
   };
 
   const handleDeletingAContact = (id) => {
-    contactsService.getContact(id).then((nameOfContactToDelete) => {
+    contactsService.getContactById(id).then((nameOfContactToDelete) => {
       if (
         window.confirm(
           `Do you really want to delete ${nameOfContactToDelete.name}'s contact?`
