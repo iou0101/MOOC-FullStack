@@ -1,8 +1,4 @@
 const ContactsForm = (props) => {
-  // TODO: make own state for each component to store user input
-  // then, send input to App where main state in manged via an event (?)
-  // thereby, ex2.10 is done. At last.
-
   const handleNameInputChange = (event) => {
     props.onNameChange(event.target.value);
   };

@@ -3,23 +3,16 @@ import ContactsForm from "./components/ContactsForm";
 import Display from "./components/Display";
 import Search from "./components/Search";
 
-// TODO: maintain ALL state management and event handlers in
-// 'App' while refactoring the rest of the funtionality to
-// other components
-
 const App = (props) => {
   const hook = () => {
     fetch("https://jdiqd7-5174.preview.csb.app/persons")
       .then((response) => response.json())
       .then((data) => setContacts(data));
   };
-
   useEffect(hook, []);
-
   const [contacts, setContacts] = useState([]);
 
   const [newContact, setNewContact] = useState({
-    id: contacts.length + 1,
     name: "",
     telephone: "",
   });
@@ -30,6 +23,24 @@ const App = (props) => {
   const checkDuplicateNames = (name) => {
     const contactsNames = contacts.map((contact) => contact.name);
     return contactsNames.includes(name);
+  };
+
+  const postContact = (contact) => {
+    fetch("https://jdiqd7-5174.preview.csb.app/persons", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(contact),
+    })
+      .then((resp) => resp.json())
+      .then((data) => console.log(data))
+      .then(() => {
+        setNewContact({
+          name: "",
+          telephone: "",
+        });
+      });
   };
 
   // returns true on duplicate telephones
@@ -60,12 +71,10 @@ const App = (props) => {
           `Telephone number "${newContact.telephone}" belongs to an already added contact. Check the telephone number again please!`
         );
       else {
-        setContacts(contacts.concat(newContact));
-        setNewContact({
-          id: newContact.id + 1,
-          name: "",
-          telephone: "",
-        });
+        // setContacts(contacts.concat(newContact));
+        console.log(newContact);
+
+        postContact(newContact);
       }
     }
   };
