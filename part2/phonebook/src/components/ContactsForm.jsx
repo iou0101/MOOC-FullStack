@@ -28,12 +28,9 @@ const ContactsForm = (props) => {
         <div>
           <label>
             telephone:
-            {/* i have no clue why input validation isn't working */}
-            {/* UPDATE: i know now, it's namely due to event.preventDefault() omiting form checks/valdiations */}
             <input
               className="telephoneInput"
               type="tel"
-              // todo: replace by var from props
               value={props.telephone}
               pattern={props.regex}
               onChange={handleTelephoneInputChange}
