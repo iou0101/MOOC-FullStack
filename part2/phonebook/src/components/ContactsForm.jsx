@@ -7,7 +7,6 @@ const ContactsForm = (props) => {
   };
 
   const handleSubmitting = (event) => {
-    // event.preventDefault();
     props.onClick(event);
   };
 

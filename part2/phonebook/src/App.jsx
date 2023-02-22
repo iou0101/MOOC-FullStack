@@ -4,13 +4,7 @@ import Display from "./components/Display";
 import Search from "./components/Search";
 
 const App = (props) => {
-  const hook = () => {
-    fetch("https://jdiqd7-5174.preview.csb.app/persons")
-      .then((response) => response.json())
-      .then((data) => setContacts(data));
-  };
-  useEffect(hook, []);
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(null);
 
   const [newContact, setNewContact] = useState({
     name: "",
@@ -18,6 +12,16 @@ const App = (props) => {
   });
 
   const [searchQuery, setSearchQuery] = useState("");
+
+  const getAllContacts = () => {
+    fetch("https://jdiqd7-5174.preview.csb.app/persons")
+      .then((response) => response.json())
+      .then((data) => setContacts(data));
+  };
+  useEffect(() => {
+    console.log("use effect ran!");
+    getAllContacts();
+  }, []);
 
   // returns true on duplicate names
   const checkDuplicateNames = (name) => {
@@ -40,7 +44,8 @@ const App = (props) => {
           name: "",
           telephone: "",
         });
-      });
+      })
+      .then(() => getAllContacts());
   };
 
   // returns true on duplicate telephones
