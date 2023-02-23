@@ -39,7 +39,7 @@ const ContactsForm = (props) => {
         </div>
       </div>
       <button type="submit" onClick={handleSubmitting}>
-        Add
+        {props.toUpdate ? "Update" : "Add"}
       </button>
     </form>
   );

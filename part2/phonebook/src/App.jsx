@@ -3,6 +3,7 @@ import ContactsForm from "./components/ContactsForm";
 import Display from "./components/Display";
 import Search from "./components/Search";
 import contactsService from "./services/contactsService";
+import "./styling/index.css";
 
 const App = (props) => {
   const [contacts, setContacts] = useState(null);
@@ -13,6 +14,8 @@ const App = (props) => {
   });
 
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [toUpdate, setToUpdate] = useState(false);
 
   const getContacts = () => {
     return contactsService
@@ -50,6 +53,7 @@ const App = (props) => {
         `Do you really want to update ${contact.name}'s telephone to ${contact.telephone}?` // lol
       )
     ) {
+      // todo: check if this .then nesting is necessary
       contactsService.getContactByName(newContact.name).then((oldContact) => {
         contactsService.updateContact(oldContact.id, contact).then(() =>
           contactsService.getAllContacts().then((data) => {
@@ -82,10 +86,10 @@ const App = (props) => {
 
   const handleAddingSubmittedContact = (event) => {
     if (!telephoneRegex.test(newContact.telephone)) {
+      console.log("nothing happened");
     } // does nothing on invalid telephone
     else if (newContact.name !== "" && newContact.telephone !== "") {
       event.preventDefault();
-
       if (isDuplicate(newContact)) {
         console.log("duplicate!");
         alert(`${newContact.name} is already added to phonebook`);
@@ -93,17 +97,25 @@ const App = (props) => {
         alert(
           `Telephone number "${newContact.telephone}" belongs to an already added contact. Check the telephone number again please!`
         );
-      } else if (checkDuplicateNames(newContact.name)) {
+      } else if (toUpdate) {
         updateContact(newContact);
+      } else {
+        addContact(newContact);
       }
-    } else {
-      addContact(newContact);
     }
   };
 
+  useEffect(() => {
+    if (contacts !== null) // ugly, but works
+    checkDuplicateNames(newContact.name)
+      ? setToUpdate(true)
+      : setToUpdate(false); 
+  }, [newContact])
+
+
   const handleNameInputFromCFComponent = (input) => {
-    setNewContact({ ...newContact, name: input });
-  };
+    setNewContact({ ...newContact, name: input }) 
+  }
 
   const handleTelephoneInputCFComponent = (input) => {
     setNewContact({ ...newContact, telephone: input });
@@ -138,7 +150,7 @@ const App = (props) => {
 
   return (
     <>
-      <div>
+      <div>        
         <h1>Phonebook App</h1>
         <Search
           handleSearchBoxInputChange={handleSearchBoxInputChange}
@@ -153,6 +165,7 @@ const App = (props) => {
         onNameChange={handleNameInputFromCFComponent}
         onTelephoneChange={handleTelephoneInputCFComponent}
         onClick={handleAddingSubmittedContact}
+        toUpdate={toUpdate}
       />
       <h2>Contacts</h2>
       {/* // conditional rendering to prevent calling .map() on null while waiting for the fetch request */}
