@@ -86,23 +86,31 @@ const App = (props) => {
       )
     ) {
       // todo: check if this .then nesting is necessary
-      contactsService.getContactByName(newContact.name).then((oldContact) => {
-        contactsService.updateContact(oldContact.id, contact).then(() =>
-          contactsService.getAllContacts().then((data) => {
-            setContacts(data);
-            // setContacts(contacts.concat(newContact));
-            setNewContact({
-              name: "",
-              telephone: "",
-            });
-            getContacts();
+      contactsService
+        .getContactByName(newContact.name)
+        .then((oldContact) => {
+          contactsService.updateContact(oldContact.id, contact).then(() =>
+            contactsService.getAllContacts().then((data) => {
+              setContacts(data);
+              // setContacts(contacts.concat(newContact));
+              setNewContact({
+                name: "",
+                telephone: "",
+              });
+              getContacts();
 
-            showPromptMessage(
-              `Contact ${contact.name} successfully updated its number to ${contact.telephone}!`
-            );
-          })
-        );
-      });
+              showPromptMessage(
+                `Contact ${contact.name} successfully updated its number to ${contact.telephone}!`
+              );
+            })
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+          showErrorMessage(
+            `Information over contact ${contact.name} has already been removed.`
+          );
+        });
     }
   };
 
