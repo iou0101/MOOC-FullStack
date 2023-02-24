@@ -2,20 +2,22 @@ import { useState, useEffect } from "react";
 import ContactsForm from "./components/ContactsForm";
 import Display from "./components/Display";
 import Search from "./components/Search";
+import Notification from "./components/Notification";
 import contactsService from "./services/contactsService";
 import "./styling/index.css";
 
 const App = (props) => {
   const [contacts, setContacts] = useState(null);
-
   const [newContact, setNewContact] = useState({
     name: "",
     telephone: "",
   });
-
   const [searchQuery, setSearchQuery] = useState("");
-
   const [toUpdate, setToUpdate] = useState(false);
+  const [prompt, setPrompt] = useState({
+    message: "",
+    isError: false,
+  });
 
   const getContacts = () => {
     return contactsService
@@ -30,7 +32,7 @@ const App = (props) => {
   // returns true on duplicate names
   const checkDuplicateNames = (name) => {
     const contactsNames = contacts.map((contact) => contact.name);
-    return contactsNames.includes(name);
+    return contactsNames.includes(name.trim());
   };
 
   const addContact = (contact) => {
@@ -43,8 +45,38 @@ const App = (props) => {
           telephone: "",
         });
         getContacts();
+
+        showPromptMessage(
+          `Contact ${contact.name} successfully added to list!`
+        );
       })
     );
+  };
+
+  const showPromptMessage = (message) => {
+    setPrompt({
+      message: message,
+      isError: false,
+    });
+    setTimeout(() => {
+      setPrompt({
+        message: "",
+        isError: false,
+      });
+    }, 5000);
+  };
+
+  const showErrorMessage = (message) => {
+    setPrompt({
+      message: message,
+      isError: true,
+    });
+    setTimeout(() => {
+      setPrompt({
+        message: "",
+        isError: false,
+      });
+    }, 5000);
   };
 
   const updateContact = (contact) => {
@@ -64,6 +96,10 @@ const App = (props) => {
               telephone: "",
             });
             getContacts();
+
+            showPromptMessage(
+              `Contact ${contact.name} successfully updated its number to ${contact.telephone}!`
+            );
           })
         );
       });
@@ -73,15 +109,17 @@ const App = (props) => {
   // returns true on duplicate telephones
   const checkDulicateTelephones = (telephone) => {
     const contactsTelephones = contacts.map((contact) => contact.telephone);
-    return contactsTelephones.includes(telephone);
+    return contactsTelephones.includes(telephone.trim());
   };
 
   // returns true on exact duplicates
   const isDuplicate = (contact) => {
-    return (
-      checkDuplicateNames(contact.name) &&
-      checkDulicateTelephones(contact.telephone)
-    ); // decoupled to allow scaling
+    return contacts.find((c) => {
+      console.log(c);
+      c.telephone == contact.telephone.trim() && c.name == contact.name.trim();
+    }) == undefined
+      ? false
+      : true;
   };
 
   const handleAddingSubmittedContact = (event) => {
@@ -92,9 +130,12 @@ const App = (props) => {
       event.preventDefault();
       if (isDuplicate(newContact)) {
         console.log("duplicate!");
-        alert(`${newContact.name} is already added to phonebook`);
+        // alert(`${newContact.name} is already added to phonebook`);
+        showErrorMessage(`${newContact.name} is already added to phonebook`);
       } else if (checkDulicateTelephones(newContact.telephone)) {
-        alert(
+        console.log("hii");
+        // alert(`Telephone number "${newContact.telephone}" belongs to an already added contact. Check the telephone number again please!`);
+        showErrorMessage(
           `Telephone number "${newContact.telephone}" belongs to an already added contact. Check the telephone number again please!`
         );
       } else if (toUpdate) {
@@ -106,16 +147,16 @@ const App = (props) => {
   };
 
   useEffect(() => {
-    if (contacts !== null) // ugly, but works
-    checkDuplicateNames(newContact.name)
-      ? setToUpdate(true)
-      : setToUpdate(false); 
-  }, [newContact])
-
+    if (contacts !== null)
+      // ugly, but works
+      checkDuplicateNames(newContact.name)
+        ? setToUpdate(true)
+        : setToUpdate(false);
+  }, [newContact]);
 
   const handleNameInputFromCFComponent = (input) => {
-    setNewContact({ ...newContact, name: input }) 
-  }
+    setNewContact({ ...newContact, name: input });
+  };
 
   const handleTelephoneInputCFComponent = (input) => {
     setNewContact({ ...newContact, telephone: input });
@@ -132,7 +173,10 @@ const App = (props) => {
           `Do you really want to delete ${nameOfContactToDelete.name}'s contact?`
         )
       )
-        contactsService.deleteContact(id).then(() => getContacts());
+        contactsService.deleteContact(id).then(() => {
+          getContacts();
+          showPromptMessage("Successfully deleted the contact!");
+        });
     });
   };
 
@@ -150,7 +194,7 @@ const App = (props) => {
 
   return (
     <>
-      <div>        
+      <div>
         <h1>Phonebook App</h1>
         <Search
           handleSearchBoxInputChange={handleSearchBoxInputChange}
@@ -158,6 +202,7 @@ const App = (props) => {
         />
       </div>
       <h2>Add a new contact</h2>
+      <Notification message={prompt.message} isError={prompt.isError} />
       <ContactsForm
         name={newContact.name}
         telephone={newContact.telephone}
