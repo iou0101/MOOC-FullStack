@@ -1,6 +1,7 @@
 
-import http from 'http';
+import express from 'express';
 
+const app = express();
 
 const contacts = [   
     { 
@@ -25,17 +26,32 @@ const contacts = [
     }
 ];
 
-const header = {
-    "Content-Type": "application/json",
-};
 
-const app = http.createServer((request, response) => {
-    response.writeHead(200, header);
-    response.end(JSON.stringify(contacts));
+app.get('/', (request, response) => {
+    response.send('<h1>Testing!</h1>')
 });
 
 
-const PORT = 3001;
-app.listen(PORT);
+app.get('/api/contacts', (request, response) => {
+    response.json(contacts);
+});
 
-console.log(`App is running on ${PORT}`);
+
+app.get('/info', (request, response) => {
+
+  const date = new Date();
+
+  const infoHTML = `
+    Phonebook has info for ${contacts.length}
+    <br />
+    ${date}
+  `;
+  response.send(infoHTML);
+});
+
+const PORT = 3001;
+
+
+app.listen(PORT, () => {
+    console.log(`App is running on ${PORT}`);
+});
