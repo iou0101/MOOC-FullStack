@@ -1,0 +1,8 @@
+POST https://jdiqd7-3001.preview.csb.app/api/contacts
+Content-Type: application/json
+
+
+{
+    "name": "test1",
+    "telephone": "06239847298374"
+}
