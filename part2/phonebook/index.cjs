@@ -1,6 +1,5 @@
 
-import express from 'express';
-
+const express = require('express');
 const app = express();
 
 const contacts = [   
@@ -48,6 +47,18 @@ app.get('/info', (request, response) => {
   `;
   response.send(infoHTML);
 });
+
+
+app.get('/api/contacts/:id', (request, response) => {
+  const id = Number(request.params.id);
+  console.log(id);
+  const contact = contacts.find(contact => contact.id ===  id);
+
+  if (contact) response.json(contact);
+  else response.status(404).end();
+});
+
+
 
 const PORT = 3001;
 
