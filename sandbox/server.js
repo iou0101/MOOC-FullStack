@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 
+
 const server = http.createServer((request, response) => 
 {
     console.log(request.url, request.method);
@@ -11,7 +12,7 @@ const server = http.createServer((request, response) =>
     // handling routing
     switch(request.url) {
         case "/":
-            path += 'index.html';
+            path += 'index.html';            
             response.statusCode = 200;
             break;
         case "/about":
@@ -34,7 +35,7 @@ const server = http.createServer((request, response) =>
 
     const file = fs.readFile(path, (err, data) => {
         if (err) console.log(err);
-        else response.write(data)
+        else response.write(data);
         
         response.end();
     });
