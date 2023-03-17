@@ -1,8 +1,19 @@
-const express = require('express')
+const express = require('express');
+const mongoose = require('mongoose');
+const Blog = require('./models/blog');
 
 
 const app = express();
 
+
+
+const dbURI = "mongodb+srv://ibrahimaldarra010101:ZDY4QYc7o0ibT75A@cluster0.rheprqk.mongodb.net/node-tutorial?retryWrites=true&w=majority";
+mongoose.connect(dbURI) // an asynchronous task 
+    .then((res) => {
+        console.log('connected to db');
+        app.listen(3000); // only listen for requests after db connection is complete 
+    })
+    .catch((err) => console.log(err));
 
 const blogs = [
     {"title": "My first blog!", "body": "Eu pariatur et dolor laborum laborum commodo nostrud tempor occaecat esse enim. Qui aliqua dolore eu ea laboris cupidatat mollit ea cupidatat laborum ullamco laboris sit. Anim adipisicing tempor magna excepteur ad esse sint id minim."},
@@ -13,12 +24,41 @@ const blogs = [
 
 app.set('view engine','ejs');
 
-app.listen(3000);
+
+// Express default middleware for allowing public access to specified server folders/files
+
+app.use(express.static('public')); // i.e. the folder named: public
+app.use(express.urlencoded({ extended: true }));
 
 
 app.get("/", (req, resp) => {
-    resp.render('index', { title: 'Home', blogs });
+    resp.redirect("/blogs");
 });
+
+
+app.get("/blogs", (req, resp) => {
+    Blog.find().sort({ createdAt: -1 }) // sorting blogs in descending order based on creation date
+    .then((res) => {
+        resp.render('index', { title: 'Home', blogs: res });
+    }).catch((err) => console.log(err));
+});
+
+app.post("/blogs", (req, resp) => {
+
+    console.log(req.body);
+
+
+    const blog = new Blog(req.body);
+
+
+    blog.save()
+        .then(() => {
+            resp.redirect("/blogs")
+        })
+        .catch((err) => console.log(err));
+});
+
+
 
 app.get("/about", (req, resp) => {
     resp.render('about', { title: 'About'});

@@ -1,0 +1,107 @@
+db.posts.insert({
+    title: 'Post One', 
+    body: 'Body of post one',
+    category: 'News',
+    likes: 4,
+    tags: ['news', 'events'],
+    user: { 
+        name: 'John Doe', 
+        status: 'author',
+    },
+    date: Date(),
+});
+
+
+[ 
+   {
+        title: 'Post One', 
+        body: 'Body of post one',
+        category: 'News',
+        likes: 4,
+        tags: ['news', 'events'],
+        user: { 
+            name: 'John Doe', 
+            status: 'author',
+        },
+        date: Date(),
+   },
+
+      {
+        title: 'Post Two', 
+        body: 'Body of post two',
+        category: 'Lifestyle',
+        likes: 0,
+        tags: ['lifestyle', 'celebreties'],
+        user: { 
+            name: 'John Doe', 
+            status: 'author',
+        },
+        date: Date(),
+   },
+
+   {
+        title: 'Post three', 
+        body: 'Body of post three',
+        category: 'Personal',
+        likes: 10,
+        tags: ['update', 'personal'],
+        user: { 
+            name: 'John Doe', 
+            status: 'author',
+        },
+        date: Date(),
+   },
+
+]
+
+
+------------------------
+show dbs
+
+
+db.createCollection("posts")
+
+
+
+db.posts.insertOne( { obj })
+db.posts.insertMany( [array] )
+// .insert() is now deprecated
+
+db.posts.find() // lists all docuements inside a collection
+db.posts.find().sort({ title: 1 }) // 1 -> asc; -1 -> desc
+
+.count() 
+
+.limit(num)
+
+.findOne(parm) //returns first matching result
+
+    // e.g.
+    db.posts.findOne({ likes: $gt: 3 })
+
+    $gt -> greater than 
+    $gte -> greater than or equals
+    $lt -> less than 
+    $lte -> less than or equals
+
+
+db.updateOne({ id: "xyz" }, 
+             { $set: *field* }) // e.g.  { $set: { category: "bruh" } } 
+
+
+                $inc -> increments a value
+
+
+// third option by updating 
+{ upsert: true } // adds docuement to collection if not found
+
+
+// by updateMany() function, if the first parameter was {}: that means that the query is updating the entire collection
+
+
+
+
+
+
+
+    
