@@ -59,6 +59,18 @@ app.post("/blogs", (req, resp) => {
 });
 
 
+app.get("/blogs/:id", (req, resp) => {
+
+    const id = req.params.id;
+
+    Blog.findById(id)
+    .then((result) => {
+        console.log(result);
+        resp.render('single', { blog: result, title: null });
+    })
+    .catch()
+})
+
 
 app.get("/about", (req, resp) => {
     resp.render('about', { title: 'About'});
