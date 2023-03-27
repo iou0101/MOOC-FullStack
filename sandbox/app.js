@@ -68,9 +68,20 @@ app.get("/blogs/:id", (req, resp) => {
         console.log(result);
         resp.render('single', { blog: result, title: null });
     })
-    .catch()
+    .catch((err) => console.log(err));
 })
 
+
+app.delete("/blogs/:id", (req, resp) => {
+    const id = req.params.id;
+
+    Blog.findByIdAndDelete(id)
+    .then(res => {
+        res.redirect("/blogs");
+    })
+    .catch(err => console.log(err));
+
+});
 
 app.get("/about", (req, resp) => {
     resp.render('about', { title: 'About'});
