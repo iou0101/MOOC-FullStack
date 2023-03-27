@@ -1,8 +1,8 @@
-import express from "express";
+import express, { response } from "express";
 
 const app = express();
 
-const contacts = [
+let contacts = [
   {
     name: "Arto Hellas",
     number: "040-123456",
@@ -25,8 +25,24 @@ const contacts = [
   },
 ];
 
+app.use(express.json());
+
 app.get("/", (req, resp) => {
-  resp.send("<div>Hello World</div>");
+  resp.redirect("/api/contacts");
+});
+
+app.get("/info", (req, resp) => {
+  const response = `<div>
+    <p>
+      Phonebok has info for ${contacts.length} people
+    </p>
+    <p>
+    ${new Date()}
+    </p>
+  </div>`;
+
+  resp.send(response);
+
 });
 
 app.get("/api/contacts/:id", (req, resp) => {
@@ -37,13 +53,69 @@ app.get("/api/contacts/:id", (req, resp) => {
     return contact.id === id;
   });
 
-  console.log(contact);
+  (contact) ? resp.json(contact) : resp.status(404).end()
+});
+
+app.post("/api/contacts", (req, resp) => {
+  const body = req.body;
+
+  // the return statement is essential to prevent
+  // the block from executing till its very end
+  if (!body) return resp.status(400).json({
+    error: "missing body content"
+  });
+
+
+  if (contacts.map(cntct => cntct.name).includes(body.name)) return resp.status(400).json({
+    error: "name must be unique"
+  });
+
+  if (!body.name) return resp.status(400).json({
+    error: "name may not be missing" 
+  })
+
+  if (!body.number) return resp.status(400).json({
+    error: "number may not be missing" 
+  })
+
+  const contact = { 
+    "name": body.name,
+    "number": body.number,
+    id: generateId()
+  }
+
+  
+
+
+  contacts = contacts.concat(contact);
+
   resp.json(contact);
 });
 
-app.post("/api/contacts", (req, resp) => {});
 
-app.delete("/api/contacts/:id", (req, resp) => {});
+const generateId = () => {
+  // generating unique id
+  // const maxId = (contacts.length > 0) 
+  //     ? Math.max(...contacts.map(n => n.id)) 
+  //     : 0;
+  // return maxId + 1;
+
+
+  // generates a random unique id
+  min = Math.ceil(1);
+  max = Math.floor(99999999999);
+  return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+}
+
+app.delete("/api/contacts/:id", (req, resp) => {
+  const id = Number(req.params.id);
+  contacts = contacts.filter(contact => contact.id !== id);
+
+  console.log(contacts);
+
+
+  resp.status(204).end();
+});
 
 app.get("/api/contacts", (req, resp) => {
   resp.json(contacts);
