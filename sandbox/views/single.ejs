@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <%- include('./partials/head.ejs') %>
 <body>
@@ -7,19 +7,39 @@
     </header>
     <main>
 
-        <h2>
-            <%= blog.title %>
-        </h2>
+        <div class="cont">
+            <h2>
+                <%= blog.title %>
+            </h2>
 
-        <div class="post-cont">
-            <p class="blog-body">
-                <%= blog.body %>
-            </p>
+            <div class="post-cont">
+                <p class="blog-body">
+                    <%= blog.body %>
+                </p>
+            </div>
+
+            <div>
+                <a class="delete-blog" data-doc="/blogs/<%= blog._id %>">Delete blog</a>
+            </div>
         </div>
-
 
     </main>
 
     <%- include('./partials/footer.ejs')  %>
+
+
+    <script>
+        const deleteLink = document.querySelector('a.delete-blog'); 
+
+        deleteLink.addEventListener('click', (e) => {
+            const path = `/blogs/${deleteLink.dataset.doc}`;
+
+            fetch(path, {
+                method: 'DELETE',
+            })
+            .then((response) => console.log(respnse))
+            .catch((err) => console.log(err));
+        })
+    </script>
 </body>
 </html>
