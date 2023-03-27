@@ -1,4 +1,6 @@
 import express, { response } from "express";
+import morgan from "morgan";
+
 
 const app = express();
 
@@ -24,8 +26,19 @@ let contacts = [
     id: 4,
   },
 ];
+ 
+// a custom morgan token
+// takes in as parameters: 
+// - a token name
+// - and a callback function in which the request is passed as a parameter inorder to stringify its body
+morgan.token('body', (req) => {
+  return JSON.stringify(req.body);
+});
+
 
 app.use(express.json());
+app.use(morgan('tiny'));
+app.use(morgan(':method :url :body'));
 
 app.get("/", (req, resp) => {
   resp.redirect("/api/contacts");
@@ -107,6 +120,11 @@ const generateId = () => {
   return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 }
 
+
+const unkownEndpoint = () => {
+  response.status(404).send({error: "Unkown endpoint"});
+}
+
 app.delete("/api/contacts/:id", (req, resp) => {
   const id = Number(req.params.id);
   contacts = contacts.filter(contact => contact.id !== id);
@@ -120,6 +138,10 @@ app.delete("/api/contacts/:id", (req, resp) => {
 app.get("/api/contacts", (req, resp) => {
   resp.json(contacts);
 });
+
+
+// middleware for non-existent routes
+app.use(unkownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT);

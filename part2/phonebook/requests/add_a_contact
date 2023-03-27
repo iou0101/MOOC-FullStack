@@ -6,3 +6,9 @@ content-type: application/json
     "number": "061234567898",
     "id": 5
 }
+
+
+### 
+
+
+GET http://localhost:3001/api/contacts
