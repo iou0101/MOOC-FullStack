@@ -2,6 +2,27 @@ import express, { response } from "express";
 import morgan from "morgan";
 
 
+const unkownEndpoint = () => {
+  response.status(404).send({error: "Unkown endpoint"});
+}
+
+
+const generateId = () => {
+  // generating unique id
+  // const maxId = (contacts.length > 0) 
+  //     ? Math.max(...contacts.map(n => n.id)) 
+  //     : 0;
+  // return maxId + 1;
+
+
+  // generates a random unique id
+  min = Math.ceil(1);
+  max = Math.floor(99999999999);
+  return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+}
+
+
+
 const app = express();
 
 let contacts = [
@@ -78,7 +99,6 @@ app.post("/api/contacts", (req, resp) => {
     error: "missing body content"
   });
 
-
   if (contacts.map(cntct => cntct.name).includes(body.name)) return resp.status(400).json({
     error: "name must be unique"
   });
@@ -106,24 +126,6 @@ app.post("/api/contacts", (req, resp) => {
 });
 
 
-const generateId = () => {
-  // generating unique id
-  // const maxId = (contacts.length > 0) 
-  //     ? Math.max(...contacts.map(n => n.id)) 
-  //     : 0;
-  // return maxId + 1;
-
-
-  // generates a random unique id
-  min = Math.ceil(1);
-  max = Math.floor(99999999999);
-  return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
-}
-
-
-const unkownEndpoint = () => {
-  response.status(404).send({error: "Unkown endpoint"});
-}
 
 app.delete("/api/contacts/:id", (req, resp) => {
   const id = Number(req.params.id);
