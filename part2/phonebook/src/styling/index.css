@@ -1,0 +1,25 @@
+table {
+    border: 1px solid black;
+    padding: 10px;
+  }
+  
+  .prompt {
+    background-color: green;
+    border-radius: 20px;
+    color: white;
+    overflow: hidden;
+    font-weight: bolder;
+    max-height: 0;
+    transition: max-height 1s ease-out;
+  }
+  
+  .error-prompt {
+    background-color: red;
+  }
+  
+  .prompt-show {
+    max-height: 400px;
+    padding: 10px;
+    margin: 10px 0px;
+  }
+  
