@@ -7,7 +7,7 @@ const Display = (props) => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Telephone number</th>
+            <th>Phone number</th>
           </tr>
         </thead>
         <tbody>
@@ -15,7 +15,7 @@ const Display = (props) => {
             <Contact
               key={contact.id}
               name={contact.name}
-              number={contact.telephone}
+              number={contact.number}
               id={contact.id}
               handleDeletingAContact={props.handleDeletingAContact}
             />

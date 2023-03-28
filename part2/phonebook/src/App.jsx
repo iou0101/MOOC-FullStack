@@ -10,7 +10,7 @@ const App = (props) => {
   const [contacts, setContacts] = useState(null);
   const [newContact, setNewContact] = useState({
     name: "",
-    telephone: "",
+    number: "",
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [toUpdate, setToUpdate] = useState(false);
@@ -42,7 +42,7 @@ const App = (props) => {
         // setContacts(contacts.concat(newContact));
         setNewContact({
           name: "",
-          telephone: "",
+          number: "",
         });
         getContacts();
 
@@ -82,7 +82,7 @@ const App = (props) => {
   const updateContact = (contact) => {
     if (
       window.confirm(
-        `Do you really want to update ${contact.name}'s telephone to ${contact.telephone}?` // lol
+        `Do you really want to update ${contact.name}'s number to ${contact.number}?` // lol
       )
     ) {
       // todo: check if this .then nesting is necessary
@@ -95,12 +95,12 @@ const App = (props) => {
               // setContacts(contacts.concat(newContact));
               setNewContact({
                 name: "",
-                telephone: "",
+                number: "",
               });
               getContacts();
 
               showPromptMessage(
-                `Contact ${contact.name} successfully updated its number to ${contact.telephone}!`
+                `Contact ${contact.name} successfully updated its number to ${contact.number}!`
               );
             })
           );
@@ -114,37 +114,37 @@ const App = (props) => {
     }
   };
 
-  // returns true on duplicate telephones
-  const checkDulicateTelephones = (telephone) => {
-    const contactsTelephones = contacts.map((contact) => contact.telephone);
-    return contactsTelephones.includes(telephone.trim());
+  // returns true on duplicate numbers
+  const checkDulicateNumbers = (number) => {
+    const contactsNumbers = contacts.map((contact) => contact.number);
+    return contactsNumbers.includes(number.trim());
   };
 
   // returns true on exact duplicates
   const isDuplicate = (contact) => {
     return contacts.find((c) => {
       console.log(c);
-      c.telephone == contact.telephone.trim() && c.name == contact.name.trim();
+      c.number == contact.number.trim() && c.name == contact.name.trim();
     }) == undefined
       ? false
       : true;
   };
 
   const handleAddingSubmittedContact = (event) => {
-    if (!telephoneRegex.test(newContact.telephone)) {
+    if (!numberRegex.test(newContact.number)) {
       console.log("nothing happened");
-    } // does nothing on invalid telephone
-    else if (newContact.name !== "" && newContact.telephone !== "") {
+    } // does nothing on invalid number
+    else if (newContact.name !== "" && newContact.number !== "") {
       event.preventDefault();
       if (isDuplicate(newContact)) {
         console.log("duplicate!");
         // alert(`${newContact.name} is already added to phonebook`);
         showErrorMessage(`${newContact.name} is already added to phonebook`);
-      } else if (checkDulicateTelephones(newContact.telephone)) {
+      } else if (checkDulicateNumbers(newContact.number)) {
         console.log("hii");
-        // alert(`Telephone number "${newContact.telephone}" belongs to an already added contact. Check the telephone number again please!`);
+        // alert(`number number "${newContact.number}" belongs to an already added contact. Check the number number again please!`);
         showErrorMessage(
-          `Telephone number "${newContact.telephone}" belongs to an already added contact. Check the telephone number again please!`
+          `number number "${newContact.number}" belongs to an already added contact. Check the number number again please!`
         );
       } else if (toUpdate) {
         updateContact(newContact);
@@ -166,8 +166,8 @@ const App = (props) => {
     setNewContact({ ...newContact, name: input });
   };
 
-  const handleTelephoneInputCFComponent = (input) => {
-    setNewContact({ ...newContact, telephone: input });
+  const handleNumberInputCFComponent = (input) => {
+    setNewContact({ ...newContact, number: input });
   };
 
   const handleSearchBoxInputChange = (event) => {
@@ -190,7 +190,7 @@ const App = (props) => {
 
   const DUTCH_PHONE_NUMBER_REGEX =
     "^(06[0-9]{8}|[+]{1}31[0]?[0-9]{9,10}|0031[0]?[0-9]{9,10})";
-  const telephoneRegex = new RegExp(DUTCH_PHONE_NUMBER_REGEX);
+  const numberRegex = new RegExp(DUTCH_PHONE_NUMBER_REGEX);
 
   const contactsToDisplay = () => {
     return searchQuery == ""
@@ -213,10 +213,10 @@ const App = (props) => {
       <Notification message={prompt.message} isError={prompt.isError} />
       <ContactsForm
         name={newContact.name}
-        telephone={newContact.telephone}
+        number={newContact.number}
         regex={DUTCH_PHONE_NUMBER_REGEX}
         onNameChange={handleNameInputFromCFComponent}
-        onTelephoneChange={handleTelephoneInputCFComponent}
+        onNumberChange={handleNumberInputCFComponent}
         onClick={handleAddingSubmittedContact}
         toUpdate={toUpdate}
       />

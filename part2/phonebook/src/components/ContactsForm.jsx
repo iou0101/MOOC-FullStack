@@ -2,8 +2,8 @@ const ContactsForm = (props) => {
     const handleNameInputChange = (event) => {
       props.onNameChange(event.target.value);
     };
-    const handleTelephoneInputChange = (event) => {
-      props.onTelephoneChange(event.target.value);
+    const handleNumberInputChange = (event) => {
+      props.onNumberChange(event.target.value);
     };
   
     const handleSubmitting = (event) => {
@@ -26,13 +26,13 @@ const ContactsForm = (props) => {
           </div>
           <div>
             <label>
-              telephone:
+              number:
               <input
-                className="telephoneInput"
+                className="numberInput"
                 type="tel"
-                value={props.telephone}
+                value={props.number}
                 pattern={props.regex}
-                onChange={handleTelephoneInputChange}
+                onChange={handleNumberInputChange}
                 required
               />
             </label>

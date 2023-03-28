@@ -1,6 +1,6 @@
 import express, { response } from "express";
 import morgan from "morgan";
-
+import cors from 'cors';
 
 const unkownEndpoint = () => {
   response.status(404).send({error: "Unkown endpoint"});
@@ -16,8 +16,8 @@ const generateId = () => {
 
 
   // generates a random unique id
-  min = Math.ceil(1);
-  max = Math.floor(99999999999);
+  const min = Math.ceil(1);
+  const max = Math.floor(99999999999);
   return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 }
 
@@ -60,6 +60,7 @@ morgan.token('body', (req) => {
 app.use(express.json());
 app.use(morgan('tiny'));
 app.use(morgan(':method :url :body'));
+app.use(cors());
 
 app.get("/", (req, resp) => {
   resp.redirect("/api/contacts");

@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:3001/contacts/";
+const baseUrl = "http://localhost:3001/api/contacts/";
 
 const getContactById = (id) => {
   const response = fetch(baseUrl + `${id}`);
