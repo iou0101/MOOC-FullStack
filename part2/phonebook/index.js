@@ -1,12 +1,11 @@
 import express, { response } from "express";
 import morgan from "morgan";
 import cors from 'cors';
-import mongoose from "mongoose";
+import { DotenvConfigOptions } from "dotenv";
 import Contact from "./src/models/Contact";
 
 
-const PORT = 3001;
-
+const PORT = process.env.PORT;
 
 
 const unkownEndpoint = () => {
@@ -158,5 +157,6 @@ app.get("/api/contacts", (req, resp) => {
 // middleware for non-existent routes
 app.use(unkownEndpoint);
 
-app.listen(PORT);
-console.log(`App is listening on port ${PORT}`);
+app.listen(PORT, () => {
+console.log(`Server is running on port ${PORT}`)
+});
