@@ -1,6 +1,13 @@
 import express, { response } from "express";
 import morgan from "morgan";
 import cors from 'cors';
+import mongoose from "mongoose";
+import Contact from "./src/models/Contact";
+
+
+const PORT = 3001;
+
+
 
 const unkownEndpoint = () => {
   response.status(404).send({error: "Unkown endpoint"});
@@ -139,13 +146,17 @@ app.delete("/api/contacts/:id", (req, resp) => {
 });
 
 app.get("/api/contacts", (req, resp) => {
-  resp.json(contacts);
+
+  // retrieving all contacts from database
+  Contact.find({}).then((contacts) => {
+    resp.json(contacts);
+  });
+
 });
 
 
 // middleware for non-existent routes
 app.use(unkownEndpoint);
 
-const PORT = 3001;
 app.listen(PORT);
 console.log(`App is listening on port ${PORT}`);
