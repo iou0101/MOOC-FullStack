@@ -24,7 +24,7 @@ const url = process.env.MONGODB_URI;
 
 console.log('connecting to ', url);
 
-mongoose.connect(MONGODB_URI)
+mongoose.connect(url)
     .then((res) => {
         console.log("Connected to Database")
     })

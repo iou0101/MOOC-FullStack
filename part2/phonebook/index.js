@@ -1,9 +1,8 @@
+import './config.js';
 import express, { response } from "express";
 import morgan from "morgan";
 import cors from 'cors';
-import { DotenvConfigOptions } from "dotenv";
-import Contact from "./src/models/Contact";
-
+import Contact from "./src/models/Contact.js";
 
 const PORT = process.env.PORT;
 
