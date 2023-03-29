@@ -7,7 +7,20 @@ const app = express();
 
 
 
-const dbURI = "mongodb+srv://ibrahimaldarra010101:ZDY4QYc7o0ibT75A@cluster0.rheprqk.mongodb.net/node-tutorial?retryWrites=true&w=majority";
+
+if (process.argv.length > 3) {
+    console.log("give password as argument");
+    process.exit(1);
+}
+
+
+
+const password = process.argv[2];
+
+
+
+
+const dbURI = `mongodb+srv://ibrahimaldarra010101:${password}@cluster0.rheprqk.mongodb.net/node-tutorial?retryWrites=true&w=majority`;
 mongoose.connect(dbURI) // an asynchronous task 
     .then((res) => {
         console.log('connected to db');
