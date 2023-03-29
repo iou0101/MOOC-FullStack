@@ -72,6 +72,16 @@ app.get("/", (req, resp) => {
   resp.redirect("/api/contacts");
 });
 
+app.get("/api/contacts", (req, resp) => {
+
+  // retrieving all contacts from database
+  Contact.find({}).then((contacts) => {
+    resp.json(contacts);
+  });
+
+});
+
+
 app.get("/info", (req, resp) => {
   const response = `<div>
     <p>
@@ -106,30 +116,31 @@ app.post("/api/contacts", (req, resp) => {
     error: "missing body content"
   });
 
-  if (contacts.map(cntct => cntct.name).includes(body.name)) return resp.status(400).json({
-    error: "name must be unique"
-  });
 
-  if (!body.name) return resp.status(400).json({
-    error: "name may not be missing" 
+  Contact.find({}).then((contacts) => {
+    if (contacts.map(c => c.name).includes(body.name)) return resp.status(400).json({
+      error: "name must be unique"
+    });
+
+
+    if (!body.name) return resp.status(400).json({
+      error: "name may not be missing" 
+    })
+
+    if (!body.number) return resp.status(400).json({
+      error: "number may not be missing" 
+    })
+
+    const contact = new Contact({
+      name: body.name,
+      number: body.number,
+    });
+
+    contact.save().then(savedContact => {
+      resp.json(savedContact);
+    });
   })
 
-  if (!body.number) return resp.status(400).json({
-    error: "number may not be missing" 
-  })
-
-  const contact = { 
-    "name": body.name,
-    "number": body.number,
-    id: generateId()
-  }
-
-  
-
-
-  contacts = contacts.concat(contact);
-
-  resp.json(contact);
 });
 
 
@@ -144,14 +155,6 @@ app.delete("/api/contacts/:id", (req, resp) => {
   resp.status(204).end();
 });
 
-app.get("/api/contacts", (req, resp) => {
-
-  // retrieving all contacts from database
-  Contact.find({}).then((contacts) => {
-    resp.json(contacts);
-  });
-
-});
 
 
 // middleware for non-existent routes
