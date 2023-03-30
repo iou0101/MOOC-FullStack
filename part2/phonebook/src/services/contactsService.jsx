@@ -6,9 +6,7 @@ const getContactById = (id) => {
 };
 
 const getContactByName = (name) => {
-  return getAllContacts().then((contacts) =>
-    contacts.find((contact) => contact.name === name)
-  );
+  return getAllContacts().then((contacts) => contacts.find((contact) => contact.name === name));
 };
 
 const getAllContacts = () => {
@@ -47,7 +45,7 @@ const updateContact = (id, updatedContact) => {
   return request
     .then((response) => {
       console.log(response);
-      response.json()
+      response.json();
     })
     .catch((error) => console.log(error));
 };
