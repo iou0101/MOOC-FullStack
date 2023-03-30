@@ -21,6 +21,18 @@ const generateId = () => {
 }
 
 
+const unkownEndpoint = (req, resp) => {
+  resp.status(404).send({error: "Unkown endpoint"})
+}
+
+
+const errorHandler = (error, req, resp, next) => {
+  console.log(error.message);
+
+  if (error.name === "CastError") return resp.status(400).send({ error: "malinformatted id" });
+
+  next(error);
+}
 
 const app = express();
 
@@ -56,6 +68,7 @@ morgan.token('body', (req) => {
 });
 
 
+app.use(express.static('build'))
 app.use(express.json());
 app.use(morgan('tiny'));
 app.use(morgan(':method :url :body'));
@@ -148,20 +161,41 @@ app.delete("/api/contacts/:id", (req, resp) => {
   // contacts = contacts.filter(contact => contact.id !== id);
   // console.log(contacts);
 
-  Contact.findOneAndRemove(id)
+  Contact.findByIdAndRemove(id)
   .then((res) => {
     console.log(res)
-    resp.send(res).status(404);
+    resp.send(res).status(204);
   })
   .catch((err) => console.log(err));
-  
-
 });
 
 
 
+app.put("/api/contacts/:id", (req, resp, next) => {
+  const id = req.params.id; 
+
+  console.log(typeof(id));
+
+  const body = req.body;
+
+
+  // contact's updated values
+  const contact = {
+    name: body.name,
+    number: body.number
+  }
+
+
+  Contact.findByIdAndUpdate(id, contact, { new:true })
+  .then((updatedContact) => resp.json(updatedContact))
+  .catch((err) => console.log(err))
+});
+
+
 // middleware for non-existent routes
-app.use((req, resp) => resp.status(404).send({error: "Unkown endpoint"}));
+app.use(unkownEndpoint);
+// middleware for error handling
+app.use(errorHandler);
 
 app.listen(PORT, () => {
 console.log(`Server is running on port ${PORT}`)

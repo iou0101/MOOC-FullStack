@@ -15,3 +15,15 @@ DELETE http://localhost:3001/api/contacts/64257117fb118c11d877c2dc
 ###
 
 GET http://localhost:3001/api/contacts
+
+
+### 
+
+
+PUT http://localhost:3001/api/contacts/64258bcdb4ea8e862ee9e700 HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Antonio Stephan",
+    "number": "066666666666666"
+}
