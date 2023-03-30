@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:3001/api/contacts/";
+const baseUrl = 'http://localhost:3001/api/contacts/';
 
 const getContactById = (id) => {
   const response = fetch(baseUrl + `${id}`);
@@ -16,11 +16,11 @@ const getAllContacts = () => {
 
 const createContact = (contact) => {
   const requestOptions = {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify(contact),
+    body: JSON.stringify(contact)
   };
   const request = fetch(baseUrl, requestOptions);
   return request.then((response) => response.json());
@@ -28,18 +28,18 @@ const createContact = (contact) => {
 
 const deleteContact = (id) => {
   const request = fetch(baseUrl + `${id}`, {
-    method: "DELETE",
+    method: 'DELETE'
   });
   return request.then((response) => response.json());
 };
 
 const updateContact = (id, updatedContact) => {
   const requestOptions = {
-    method: "PUT",
+    method: 'PUT',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify(updatedContact),
+    body: JSON.stringify(updatedContact)
   };
   const request = fetch(baseUrl + `${id}`, requestOptions);
   return request
@@ -56,5 +56,5 @@ export default {
   getAllContacts,
   createContact,
   updateContact,
-  deleteContact,
+  deleteContact
 };

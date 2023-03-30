@@ -1,8 +1,8 @@
-import './config.js';
+import './config.mjs';
 import express, { response } from "express";
 import morgan from "morgan";
 import cors from 'cors';
-import Contact from "./src/models/Contact.js";
+import Contact from "./src/models/Contact.mjs";
 
 const PORT = process.env.PORT;
 
