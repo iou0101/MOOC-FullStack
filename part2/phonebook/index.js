@@ -92,19 +92,17 @@ app.get("/info", (req, resp) => {
 app.get("/api/contacts/:id", (req, resp) => {
   const id = req.params.id;
 
-  // const contact = contacts.find((contact) => {
-  //   console.log();
-  //   return contact.id === id;
-  // });
-
-  // (contact) ? resp.json(contact) : resp.status(404).end()
-
 
   Contact.findById(id)
     .then((contact) => {
-      resp.json(contact)
+      (contact) ? resp.json(contact) 
+                : resp.status(404).end();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err)
+      // resp.status(500).end();
+      resp.status(400).send({ error: 'malinformatted id' });
+    });
 });
 
 app.post("/api/contacts", (req, resp) => {
