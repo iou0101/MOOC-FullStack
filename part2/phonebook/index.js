@@ -6,12 +6,6 @@ import Contact from "./src/models/Contact.js";
 
 const PORT = process.env.PORT;
 
-
-const unkownEndpoint = () => {
-  response.status(404).send({error: "Unkown endpoint"});
-}
-
-
 const generateId = () => {
   // generating unique id
   // const maxId = (contacts.length > 0) 
@@ -157,7 +151,7 @@ app.delete("/api/contacts/:id", (req, resp) => {
 
 
 // middleware for non-existent routes
-app.use(unkownEndpoint);
+app.use((req, resp) => resp.status(404).send({error: "Unkown endpoint"}));
 
 app.listen(PORT, () => {
 console.log(`Server is running on port ${PORT}`)
