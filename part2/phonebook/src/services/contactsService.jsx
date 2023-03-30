@@ -45,7 +45,10 @@ const updateContact = (id, updatedContact) => {
   };
   const request = fetch(baseUrl + `${id}`, requestOptions);
   return request
-    .then((response) => response.json())
+    .then((response) => {
+      console.log(response);
+      response.json()
+    })
     .catch((error) => console.log(error));
 };
 

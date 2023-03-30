@@ -2,13 +2,16 @@ POST http://localhost:3001/api/contacts HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Arto Hellas",
-    "number": "061234567898",
-    "id": 5
+    "name": "New Name",
+    "number": ""
 }
 
 
 ### 
 
+
+DELETE http://localhost:3001/api/contacts/64257117fb118c11d877c2dc
+
+###
 
 GET http://localhost:3001/api/contacts

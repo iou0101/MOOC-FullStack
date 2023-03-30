@@ -90,14 +90,21 @@ app.get("/info", (req, resp) => {
 });
 
 app.get("/api/contacts/:id", (req, resp) => {
-  const id = Number(req.params.id);
+  const id = req.params.id;
 
-  const contact = contacts.find((contact) => {
-    console.log();
-    return contact.id === id;
-  });
+  // const contact = contacts.find((contact) => {
+  //   console.log();
+  //   return contact.id === id;
+  // });
 
-  (contact) ? resp.json(contact) : resp.status(404).end()
+  // (contact) ? resp.json(contact) : resp.status(404).end()
+
+
+  Contact.findById(id)
+    .then((contact) => {
+      resp.json(contact)
+    })
+    .catch((err) => console.log(err));
 });
 
 app.post("/api/contacts", (req, resp) => {
@@ -139,13 +146,18 @@ app.post("/api/contacts", (req, resp) => {
 
 
 app.delete("/api/contacts/:id", (req, resp) => {
-  const id = Number(req.params.id);
-  contacts = contacts.filter(contact => contact.id !== id);
+  const id = req.params.id;
+  // contacts = contacts.filter(contact => contact.id !== id);
+  // console.log(contacts);
 
-  console.log(contacts);
+  Contact.findOneAndRemove(id)
+  .then((res) => {
+    console.log(res)
+    resp.send(res).status(404);
+  })
+  .catch((err) => console.log(err));
+  
 
-
-  resp.status(204).end();
 });
 
 
