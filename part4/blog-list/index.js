@@ -1,7 +1,9 @@
-const express = require('express');
-const app = express();
+
 const cors = require('cors');
 const mongoose = require('mongoose');
+
+const app = require('./app');
+const config = require('./utils/config');
 
 const blogSchema = new mongoose.Schema({
   title: String,
@@ -11,12 +13,6 @@ const blogSchema = new mongoose.Schema({
 });
 
 const Blog = mongoose.model('Blog', blogSchema);
-
-const mongoUrl = 'mongodb+srv://ibrahimaldarra010101:ZDY4QYc7o0ibT75A@cluster0.rheprqk.mongodb.net/blog-list?retryWrites=true&w=majority';
-mongoose.connect(mongoUrl);
-
-app.use(cors());
-app.use(express.json());
 
 app.get('/api/blogs', (request, response) => {
   Blog
@@ -36,7 +32,6 @@ app.post('/api/blogs', (request, response) => {
     });
 });
 
-const PORT = 3003;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+app.listen(config.PORT, () => {
+  console.log(`Server running on port ${config.PORT}`)
 });
